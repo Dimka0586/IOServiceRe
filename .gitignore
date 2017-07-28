@@ -1,0 +1,7 @@
+.idea
+*.iml
+pom.xml
+lib
+target
+# Except this file
+!.gitignore

@@ -1,0 +1,3 @@
+create table user_type (id int not null auto_increment, name varchar(50), primary key (id));
+create table user (id int not null auto_increment, user_type_id int, surName varchar(100),surNameLat varchar(100), name varchar(100), nameLat varchar(100), patronymic varchar(100),patronymicLat varchar(100), dateBirth date NULL, phoneNumber1 varchar(50), phoneNumber2 varchar(50),phoneNumber3 varchar(50), passportUa text, passportFg text, brigadier_id int,comments text, primary key (id), foreign key (user_type_id) references user_type(id),foreign key (brigadier_id) references user(id));
+create table trip (id int not null auto_increment, user_id int, departure_date date NULL, arrival_date date NULL, comments text, primary key (id), foreign key (user_id) references user(id));

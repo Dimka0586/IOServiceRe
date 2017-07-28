@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc
+	   http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	   http://www.springframework.org/schema/jdbc
+	   http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+	   http://www.springframework.org/schema/tx
+	   http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd"
+>
+
+
+    <!--Find properties-->
+    <context:property-placeholder location="classpath:properties/**"/>
+
+    <context:annotation-config/>
+
+    <!-- context:component-scan This tag will scan @Component, @Repository, @Service, @Controller
+         and also resolves @Autowired and @Qualifier -->
+    <context:component-scan base-package="ua.in.SmartHome"/>
+
+    <!-- Static Resources Configuration (get access to static sources such as CSS and JavaScript files) -->
+    <mvc:resources mapping="/resources/**" location="/resources/" />
+
+
+    <!--
+        mvc:annotation-driven configures Spring MVC annotations
+        Support for validating @Controller inputs with @Valid, if a JSR-303 Provider is present on the classpath.
+        HttpMessageConverter support for @RequestBody method parameters and @ResponseBody method return values
+        from @RequestMapping or @ExceptionHandler methods.
+     -->
+    <mvc:annotation-driven/>
+
+    <!--ViewResolver bean config for mapping strings to jsp views -->
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <!--property name="order" value="1" /-->
+        <property name="prefix" value="/WEB-INF/view/"/>
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+
+    <beans profile="prodProfile">
+        <bean id="dataSourceMysql" class="org.apache.commons.dbcp2.BasicDataSource">
+            <property name="driverClassName" value="${jdbc.mysql.driverClass}" />
+            <property name="url" value="${jdbc.mysql.url}" />
+            <property name="username" value="${jdbc.mysql.username}" />
+            <property name="password" value="${jdbc.mysql.password}" />
+            <property name="initialSize" value="5" />
+            <property name="maxTotal" value="10"/>
+        </bean>
+        <!--<jdbc:initialize-database data-source="dataSourceMysql">
+            &lt;!&ndash;<jdbc:script location="classpath:db/create_table.sql"/>&ndash;&gt;
+            <jdbc:script location="classpath:db/create_data.sql"/>
+        </jdbc:initialize-database>-->
+        <bean id="jdbcTemplateMysql" class="org.springframework.jdbc.core.JdbcTemplate">
+            <constructor-arg name="dataSource" ref="dataSourceMysql"/>
+        </bean>
+        <!-- Configure the entity manager factory bean -->
+        <bean id="entityManagerFactoryMysql"
+              class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+            <property name="dataSource" ref="dataSourceMysql"/>
+            <property name="jpaVendorAdapter" ref="hibernateJpaVendorAdapterMysql"/>
+            <!-- Set JPA properties -->
+            <property name="jpaProperties">
+                <props>
+                    <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+                    <prop key="hibernate.hbm2ddl.auto">update</prop>
+                    <prop key="hibernate.show_sql">true</prop>
+                    <!--<prop key="javax.persistence.schema-generation.database.action">none</prop>
+                    <prop key="hibernate.ejb.use_class_enhancer">true</prop>-->
+                </props>
+            </property>
+            <!-- Set base package of your entities -->
+            <property name="packagesToScan" value="ua.in.SmartHome.model"/>
+            <!-- Set share cache mode -->
+            <!--<property name="sharedCacheMode" value="ENABLE_SELECTIVE"/>-->
+            <!-- Set validation mode -->
+            <!--<property name="validationMode" value="NONE"/>-->
+        </bean>
+        <!-- Create default configuration for Hibernate -->
+        <bean id="hibernateJpaVendorAdapterMysql"
+              class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+
+        <!-- Configure the transaction manager bean -->
+        <bean id="transactionManagerMysql"
+              class="org.springframework.orm.jpa.JpaTransactionManager">
+            <property name="entityManagerFactory" ref="entityManagerFactoryMysql"/>
+        </bean>
+        <tx:annotation-driven transaction-manager="transactionManagerMysql"/>
+    </beans>
+
+
+
+    <beans profile="testProfile">
+        <bean id="dataSourceH2" class="org.apache.commons.dbcp2.BasicDataSource">
+            <!--<property name="driverClassName" value="${jdbc.h2.driverClass}" />
+            <property name="url" value="${jdbc.h2.url}" />
+            <property name="username" value="${jdbc.h2.username}" />
+            <property name="password" value="${jdbc.h2.password}" />-->
+            <property name="driverClassName" value="org.h2.Driver" />
+            <property name="url" value="jdbc:h2:mem:IOServiceRe" />
+            <property name="username" value="sa" />
+            <property name="password" value="" />
+            <property name="initialSize" value="5" />
+            <property name="maxTotal" value="10"/>
+        </bean>
+        <!-- initialize Embedded DataSource. Встроенная база данных-->
+        <!--<jdbc:initialize-database data-source="dataSourceH2">
+            &lt;!&ndash;<jdbc:script location="classpath:db/create_table.sql"/>&ndash;&gt;
+            <jdbc:script location="classpath:db/create_data.sql"/>
+        </jdbc:initialize-database>-->
+        <bean id="jdbcTemplateH2" class="org.springframework.jdbc.core.JdbcTemplate">
+            <constructor-arg name="dataSource" ref="dataSourceH2"/>
+        </bean>
+        <!-- Configure the entity manager factory bean -->
+        <bean id="entityManagerFactoryH2"
+              class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+            <property name="dataSource" ref="dataSourceH2"/>
+            <property name="jpaVendorAdapter" ref="hibernateJpaVendorAdapterH2"/>
+            <!-- Set JPA properties -->
+            <property name="jpaProperties">
+                <props>
+                    <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+                    <prop key="hibernate.hbm2ddl.auto">update</prop>
+                    <prop key="hibernate.show_sql">true</prop>
+                    <!--<prop key="javax.persistence.schema-generation.database.action">none</prop>
+                    <prop key="hibernate.ejb.use_class_enhancer">true</prop>-->
+                </props>
+            </property>
+            <!-- Set base package of your entities -->
+            <property name="packagesToScan" value="ua.in.SmartHome.model"/>
+            <!-- Set share cache mode -->
+            <property name="sharedCacheMode" value="ENABLE_SELECTIVE"/>
+            <!-- Set validation mode -->
+            <property name="validationMode" value="NONE"/>
+        </bean>
+        <!-- Create default configuration for Hibernate -->
+        <bean id="hibernateJpaVendorAdapterH2"
+              class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+        <!-- Configure the transaction manager bean -->
+        <bean id="transactionManager"
+              class="org.springframework.orm.jpa.JpaTransactionManager">
+            <property name="entityManagerFactory" ref="entityManagerFactoryH2"/>
+        </bean>
+        <!-- Enable annotation driven transaction management -->
+        <tx:annotation-driven transaction-manager="transactionManager"/>
+
+
+
+        <bean id="realVariableTagType" class="ua.in.SmartHome.model.VariableTagType">
+            <property name="name" value="REAL"/>
+            <property name="countRegister" value="1"/>
+            <property name="comment" value="REAL TYPE comment"/>
+        </bean>
+
+        <bean id="intVariableTagType" class="ua.in.SmartHome.model.VariableTagType">
+            <property name="name" value="INT"/>
+            <property name="countRegister" value="1"/>
+            <property name="comment" value="INT TYPE comment"/>
+        </bean>
+
+
+        <!--<bean id="analogSensorTypeProps" class="ua.in.SmartHome.model.EquipmentTypeProperties">
+            <property name="varTagProps">
+                <util:map id="analogSensorTypePropsMap" map-class="java.util.LinkedHashMap"
+                          key-type="java.lang.String" value-type="ua.in.SmartHome.model.VariableTagType">
+                    <entry key="eng" value-ref="intVariableTagType"/>
+                    <entry key="engMin" value-ref="intVariableTagType"/>
+                    <entry key="engMax" value-ref="intVariableTagType"/>
+                    <entry key="r" value-ref="realVariableTagType" />
+                    <entry key="rMin" value-ref="realVariableTagType" />
+                    <entry key="rMax" value-ref="realVariableTagType" />
+                </util:map>
+            </property>
+        </bean>-->
+
+
+        <!--Arduino SmartHome Settings-->
+        <bean id="arduinoSmartHomePort" class="ua.in.SmartHome.model.system.Port">
+            <property name="name" value="COM9"/>
+            <property name="baudRate" value="9600"/>
+            <property name="dataBit" value="8"/>
+            <property name="stopBit" value="1"/>
+            <property name="parity" value="0"/>
+            <property name="encoding" value="RTU"/>
+            <property name="echo" value="false"/>
+            <property name="comment" value="Arduino SmartHome port"/>
+        </bean>
+        
+        <bean id="arduinoSmartHomeProtocol" class="ua.in.SmartHome.model.system.Protocol">
+            <property name="name" value="j2ModModbusSerialDaoImpl"/>
+        </bean>
+
+        <bean id="arduinoSmartHomeIODevice" class="ua.in.SmartHome.model.system.IODevice">
+            <property name="port" ref="arduinoSmartHomePort"/>
+            <property name="protocol" ref="arduinoSmartHomeProtocol"/>
+        </bean>
+
+        <bean id="j2ModModbusSerialDaoImpl" class="ua.in.SmartHome.dao.device.modbus.serial.J2ModModbusSerialDaoImpl">
+            <property name="ioDevice" ref="arduinoSmartHomeIODevice"/>
+        </bean>
+
+        <bean id="serialParameters" class="com.ghgande.j2mod.modbus.util.SerialParameters">
+            <property name="portName" value="COM9"/>
+            <property name="baudRate" value="9600"/>
+            <property name="databits" value="8"/>
+            <property name="stopbits" value="1"/>
+            <property name="parity" value="0"/>
+            <property name="encoding" value="rtu"/>
+            <property name="echo" value="false"/>
+        </bean>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </beans>
+
+
+
+
+
+</beans>
