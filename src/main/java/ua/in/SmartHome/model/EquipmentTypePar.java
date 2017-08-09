@@ -14,18 +14,22 @@ public class EquipmentTypePar {
     @Column(name = "name")
     private String name;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private VariableTagType variableTagType;
+    @Column(name = "count_register")
+    private int countRegister;
 
-    @JoinColumn(name = "equipmentTypePars")
-    EquipmentType equipmentType;
+    @ManyToOne
+    EquipmentTypeTree equipmentTypeTree;
 
     public EquipmentTypePar() {
     }
 
-    public EquipmentTypePar(String name, VariableTagType variableTagType) {
+    public EquipmentTypePar(String name) {
         this.name = name;
-        this.variableTagType = variableTagType;
+    }
+
+    public EquipmentTypePar(String name, int countRegister) {
+        this.name = name;
+        this.countRegister = countRegister;
     }
 
     public int getId() {
@@ -40,12 +44,20 @@ public class EquipmentTypePar {
         this.name = name;
     }
 
-    public VariableTagType getVariableTagType() {
-        return variableTagType;
+    public int getCountRegister() {
+        return countRegister;
     }
 
-    public void setVariableTagType(VariableTagType variableTagType) {
-        this.variableTagType = variableTagType;
+    public void setCountRegister(int countRegister) {
+        this.countRegister = countRegister;
+    }
+
+    public EquipmentTypeTree getEquipmentTypeTree() {
+        return equipmentTypeTree;
+    }
+
+    public void setEquipmentTypeTree(EquipmentTypeTree equipmentTypeTree) {
+        this.equipmentTypeTree = equipmentTypeTree;
     }
 
     @Override
@@ -53,7 +65,6 @@ public class EquipmentTypePar {
         return "EquipmentTypePar{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", variableTagType=" + variableTagType +
                 '}';
     }
 }

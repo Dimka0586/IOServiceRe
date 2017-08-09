@@ -14,8 +14,8 @@ import ua.in.SmartHome.model.Equipment;
 @ContextConfiguration(locations = "classpath:application-context.xml")
 @WebAppConfiguration
 @Transactional
-@ActiveProfiles(profiles = "testProfile")
-@Rollback
+@ActiveProfiles(profiles = "prodProfile")
+@Rollback(false)
 public class EquipmentDaoImplTest extends AbstractDaoTest<Equipment> {
 
     public EquipmentDaoImplTest() {

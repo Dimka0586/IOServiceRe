@@ -57,4 +57,14 @@ public class VariableTag  implements Identity, Serializable, Cloneable{
     public void setEquipment(Equipment equipment) {
         this.equipment = equipment;
     }
+
+    @Override
+    public String toString() {
+        return "VariableTag{" +
+                "id=" + id +
+                ", address=" + address +
+                ", equipmentTypePar=" + equipmentTypePar +
+                ", equipment=" + equipment +
+                '}';
+    }
 }

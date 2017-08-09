@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
 @ContextConfiguration(locations = "classpath:application-context.xml")
 @WebAppConfiguration
 @Transactional
-@ActiveProfiles(profiles = "testProfile")
+@ActiveProfiles(profiles = "prodProfile")
 @Rollback
 public abstract class AbstractDaoTest<T extends Identity>{
 

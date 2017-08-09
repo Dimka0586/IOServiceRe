@@ -14,24 +14,31 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.in.SmartHome.dao.db.EquipmentDao;
 import ua.in.SmartHome.dao.db.EquipmentTypeDao;
 import ua.in.SmartHome.dao.db.EquipmentTypeParDao;
+import ua.in.SmartHome.dao.db.VariableTagDao;
+import ua.in.SmartHome.dao.db.system.IODeviceDao;
 import ua.in.SmartHome.dao.device.modbus.serial.J2ModModbusSerialDaoImpl;
 import ua.in.SmartHome.model.*;
+import ua.in.SmartHome.model.system.IODevice;
 import ua.in.SmartHome.util.EquipmentVarTagBuilder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:application-context.xml")
 @WebAppConfiguration
 @Transactional
-@ActiveProfiles(profiles = "testProfile")
-@Rollback
+@ActiveProfiles(profiles = "prodProfile")
+@Rollback(false)
 public class EquipmentDaoImplTest {
 
     @Autowired
     @Qualifier(value = "realVariableTagType")
-    VariableTagType realVariableTagType;
+    EquipmentTypePar realVariableTagType;
+
+    @Autowired
+    VariableTagDao variableTagDao;
 
     @Autowired
     EquipmentTypeParDao equipmentTypeParDao;
@@ -41,44 +48,61 @@ public class EquipmentDaoImplTest {
 
     @Autowired
     EquipmentDao equipmentDao;
+
+    @Autowired
+    IODeviceDao iODeviceDao;
+
     @Autowired
     EquipmentVarTagBuilder equipmentVarTagBuilder;
 
 
-    @Autowired
-    SerialParameters serialParameters;
+    //@Autowired
+    //SerialParameters serialParameters;
 
     @Test
     public void create() {
-        EquipmentTypePar inAnalogSensor = new EquipmentTypePar("in", realVariableTagType);
-        EquipmentTypePar outAnalogSensor = new EquipmentTypePar("out", realVariableTagType);
-        List<EquipmentTypePar> analogSensorEquipmentTypePars = new ArrayList();
-        analogSensorEquipmentTypePars.add(equipmentTypeParDao.create(inAnalogSensor));
-        analogSensorEquipmentTypePars.add(equipmentTypeParDao.create(outAnalogSensor));
+        EquipmentType analogSensorType = new EquipmentType("AnalogSensor");
+        equipmentTypeDao.create(analogSensorType);
+        EquipmentTypePar inAnalogSensor = new EquipmentTypePar("in");
+        //inAnalogSensor.setEquipmentType(analogSensorType);
+        equipmentTypeParDao.create(inAnalogSensor);
 
-        EquipmentType analogSensorType = new EquipmentType();
+        /*EquipmentType analogSensorType1 = new EquipmentType("AnalogSensor");
+        equipmentTypeDao.create(analogSensorType1);
+        EquipmentTypePar inAnalogSensor1 = new EquipmentTypePar("in", realVariableTagType);
+        inAnalogSensor.setEquipmentType(analogSensorType1);
+        equipmentTypeParDao.create(inAnalogSensor1);*/
 
-        analogSensorType.setEquipmentTypePars(analogSensorEquipmentTypePars);
-        analogSensorType = equipmentTypeDao.create(analogSensorType);
 
-        Equipment temp1 = new Equipment("temp1", 0, analogSensorType);
+
+
+
+
+
+
+
+
+
+
+        /*Equipment temp1 = new Equipment("temp1", 0, analogSensorType);
+
         List<VariableTag> temp1VarTags = equipmentVarTagBuilder.createVarTagsEquipment(temp1);
+
         temp1.setVariableTags(temp1VarTags);
         temp1 = equipmentDao.create(temp1);
         System.out.println(temp1);
 
         Equipment cloneTemp1 = equipmentDao.readById(1);
-        System.out.println(cloneTemp1);
+        System.out.println(cloneTemp1);**//*
+*/
 
-        J2ModModbusSerialDaoImpl modbusDaoImpl = new J2ModModbusSerialDaoImpl(serialParameters);
+
+        /*J2ModModbusSerialDaoImpl modbusDaoImpl = new J2ModModbusSerialDaoImpl(serialParameters);
 
         for(int i = 0; i < 2000; i++){
             List<Integer> integers = modbusDaoImpl.readInputReg(1, 0, 10);
 
             if (integers != null) {
-                /*for (Integer integer : integers) {
-                    System.out.println(integer);
-                }*/
                 System.out.println(integers.get(0));
                 System.out.println(integers.get(1));
                 System.out.println(integers.get(2));
@@ -95,7 +119,7 @@ public class EquipmentDaoImplTest {
                 e.getMessage();
             }
 
-        }
+        }*/
 
 
     }

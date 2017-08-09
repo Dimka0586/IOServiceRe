@@ -1,10 +1,7 @@
 package ua.in.SmartHome.model;
 
-import ua.in.SmartHome.model.system.IODevice;
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,13 +20,11 @@ public class Equipment implements Identity, Serializable, Cloneable {
     private int startAddress;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private EquipmentType equipmentType;
+    private EquipmentTypeTree equipmentTypeTree;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "equipment")
-    List<VariableTag> variableTags;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "equipment")
+    private List<ScaleData> scaleDatas;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private IODevice ioDevice;
 
     public Equipment() {
     }
@@ -37,15 +32,12 @@ public class Equipment implements Identity, Serializable, Cloneable {
     public Equipment(String name, int startAddress, EquipmentType equipmentType) {
         this.name = name;
         this.startAddress = startAddress;
-        this.equipmentType = equipmentType;
-        List<VariableTag> variableTags = new ArrayList<VariableTag>();
-        for(EquipmentTypePar equipmentTypePar:equipmentType.getEquipmentTypePars()){
-            equipmentTypePar.getName();
-            equipmentTypePar.getVariableTagType();
-            variableTags.add(new VariableTag(startAddress, equipmentTypePar));
-            startAddress += equipmentTypePar.getVariableTagType().getCountRegister();
+    }
 
-        }
+    public Equipment(String name, int startAddress, EquipmentTypeTree equipmentTypeTree) {
+        this.name = name;
+        this.startAddress = startAddress;
+        this.equipmentTypeTree = equipmentTypeTree;
     }
 
     public int getId() {
@@ -68,43 +60,32 @@ public class Equipment implements Identity, Serializable, Cloneable {
         this.startAddress = startAddress;
     }
 
-    public EquipmentType getEquipmentType() {
-        return equipmentType;
+    public EquipmentTypeTree getEquipmentTypeTree() {
+        return equipmentTypeTree;
     }
 
-    public void setEquipmentType(EquipmentType equipmentType) {
-        this.equipmentType = equipmentType;
+    public void setEquipmentTypeTree(EquipmentTypeTree equipmentTypeTree) {
+        this.equipmentTypeTree = equipmentTypeTree;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
-    public IODevice getIoDevice() {
-        return ioDevice;
+    public List<ScaleData> getScaleDatas() {
+        return scaleDatas;
     }
 
-    public void setIoDevice(IODevice ioDevice) {
-        this.ioDevice = ioDevice;
-    }
-
-    public List<VariableTag> getVariableTags() {
-        return variableTags;
-    }
-
-    public void setVariableTags(List<VariableTag> variableTags) {
-        this.variableTags = variableTags;
+    public void setScaleDatas(List<ScaleData> scaleDatas) {
+        this.scaleDatas = scaleDatas;
     }
 
     @Override
     public String toString() {
         return "Equipment{" +
-                "id=" + id + "\n" +
-                ", name='" + name + '\n' +
-                ", startAddress=" + startAddress + "\n" +
-                ", equipmentType=" + equipmentType + "\n" +
-                ", variableTags=" + variableTags + "\n" +
-                ", ioDevice=" + ioDevice +
+                "id=" + id + ", " + "\n" +
+                "   name='" + name + ", " + '\n' +
+                "   startAddress=" + startAddress + ", " + "\n" +
                 '}';
     }
 }

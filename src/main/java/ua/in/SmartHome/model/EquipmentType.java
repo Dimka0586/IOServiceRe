@@ -4,8 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-@Entity
-@Table(name = "EquipmentType")
+
 public class EquipmentType implements Identity, Serializable, Cloneable {
 
     @Id
@@ -13,14 +12,29 @@ public class EquipmentType implements Identity, Serializable, Cloneable {
     @GeneratedValue
     private int id;
 
+    @Column(name = "name", unique = true)
+    private String name;
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "equipmentType")
     List<EquipmentTypePar> equipmentTypePars;
 
     public EquipmentType() {
     }
 
+    public EquipmentType(String name) {
+        this.name = name;
+    }
+
     public int getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<EquipmentTypePar> getEquipmentTypePars() {
@@ -34,8 +48,8 @@ public class EquipmentType implements Identity, Serializable, Cloneable {
     @Override
     public String toString() {
         return "EquipmentType{" +
-                "id=" + id +
-                ", equipmentTypePars=" + equipmentTypePars +
+                "id=" + id + ", " + '\n' +
+                "   equipmentTypePars=" + equipmentTypePars +
                 '}';
     }
 }

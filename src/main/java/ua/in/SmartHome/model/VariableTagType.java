@@ -2,6 +2,7 @@ package ua.in.SmartHome.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -21,6 +22,9 @@ public class VariableTagType implements Identity, Serializable, Cloneable{
 
     @Column(name = "comment")
     private String comment;
+
+    @OneToMany
+    private List<EquipmentTypePar> equipmentTypePars;
 
     public VariableTagType() {
     }
@@ -53,4 +57,11 @@ public class VariableTagType implements Identity, Serializable, Cloneable{
         this.comment = comment;
     }
 
+    public List<EquipmentTypePar> getEquipmentTypePars() {
+        return equipmentTypePars;
+    }
+
+    public void setEquipmentTypePars(List<EquipmentTypePar> equipmentTypePars) {
+        this.equipmentTypePars = equipmentTypePars;
+    }
 }

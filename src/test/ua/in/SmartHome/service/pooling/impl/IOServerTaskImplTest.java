@@ -67,7 +67,7 @@ public class IOServerTaskImplTest {
 
         Equipment equipment = new Equipment();
         equipment.setName("testEquipment");
-        equipment.setEquipmentType(equipmentType);
+        //equipment.setEquipmentType(equipmentType);
 
         protocolDao.read(equipment);
 

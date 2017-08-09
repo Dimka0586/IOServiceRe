@@ -73,7 +73,7 @@
             <property name="jpaProperties">
                 <props>
                     <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
-                    <prop key="hibernate.hbm2ddl.auto">update</prop>
+                    <prop key="hibernate.hbm2ddl.auto">create</prop>
                     <prop key="hibernate.show_sql">true</prop>
                     <!--<prop key="javax.persistence.schema-generation.database.action">none</prop>
                     <prop key="hibernate.ejb.use_class_enhancer">true</prop>-->
@@ -96,9 +96,19 @@
             <property name="entityManagerFactory" ref="entityManagerFactoryMysql"/>
         </bean>
         <tx:annotation-driven transaction-manager="transactionManagerMysql"/>
+
+        <bean id="realVariableTagType" class="ua.in.SmartHome.model.VariableTagType">
+            <property name="name" value="REAL"/>
+            <property name="countRegister" value="1"/>
+            <!--property name="comment" value="REAL TYPE comment"/-->
+        </bean>
+        <bean id="intVariableTagType" class="ua.in.SmartHome.model.VariableTagType">
+            <property name="name" value="INT"/>
+            <property name="countRegister" value="1"/>
+            <!--property name="comment" value="INT TYPE comment"/-->
+        </bean>
+
     </beans>
-
-
 
     <beans profile="testProfile">
         <bean id="dataSourceH2" class="org.apache.commons.dbcp2.BasicDataSource">
@@ -154,19 +164,19 @@
         <!-- Enable annotation driven transaction management -->
         <tx:annotation-driven transaction-manager="transactionManager"/>
 
-
-
-        <bean id="realVariableTagType" class="ua.in.SmartHome.model.VariableTagType">
+        <bean id="realVariableTagTypeH2" class="ua.in.SmartHome.model.VariableTagType">
             <property name="name" value="REAL"/>
             <property name="countRegister" value="1"/>
-            <property name="comment" value="REAL TYPE comment"/>
+            <!--property name="comment" value="REAL TYPE comment"/-->
         </bean>
-
-        <bean id="intVariableTagType" class="ua.in.SmartHome.model.VariableTagType">
+        <bean id="intVariableTagTypeH2" class="ua.in.SmartHome.model.VariableTagType">
             <property name="name" value="INT"/>
             <property name="countRegister" value="1"/>
-            <property name="comment" value="INT TYPE comment"/>
+            <!--property name="comment" value="INT TYPE comment"/-->
         </bean>
+
+
+
 
 
         <!--<bean id="analogSensorTypeProps" class="ua.in.SmartHome.model.EquipmentTypeProperties">
@@ -242,6 +252,7 @@
 
 
     </beans>
+
 
 
 

@@ -2,7 +2,7 @@ package ua.in.SmartHome.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
+import java.sql.Time;
 
 @Entity
 @Table(name = "ScaleData")
@@ -30,6 +30,11 @@ public class ScaleData implements Identity, Serializable, Cloneable{
     @Column(name = "rMax")
     float rMax;
 
+    @Column(name = "curr_time")
+    private Time time;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Equipment equipment;
 
     public ScaleData(){
 
@@ -94,5 +99,19 @@ public class ScaleData implements Identity, Serializable, Cloneable{
         this.engMax = engMax;
     }
 
+    public Time getTime() {
+        return time;
+    }
 
+    public void setTime(Time time) {
+        this.time = time;
+    }
+
+    public Equipment getEquipment() {
+        return equipment;
+    }
+
+    public void setEquipment(Equipment equipment) {
+        this.equipment = equipment;
+    }
 }
