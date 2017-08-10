@@ -1,5 +1,6 @@
 .idea
 *.iml
 target
+lib
 # Except this file
 !.gitignore
