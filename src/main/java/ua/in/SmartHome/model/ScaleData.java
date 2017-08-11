@@ -34,7 +34,7 @@ public class ScaleData implements Identity, Serializable, Cloneable{
     private Time time;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Equipment equipment;
+    private VariableTag variableTag;
 
     public ScaleData(){
 
@@ -107,11 +107,14 @@ public class ScaleData implements Identity, Serializable, Cloneable{
         this.time = time;
     }
 
-    public Equipment getEquipment() {
-        return equipment;
-    }
+	public VariableTag getVariableTag() {
+		return variableTag;
+	}
 
-    public void setEquipment(Equipment equipment) {
-        this.equipment = equipment;
-    }
+	public void setVariableTag(VariableTag variableTag) {
+		this.variableTag = variableTag;
+	}
+
+
+
 }

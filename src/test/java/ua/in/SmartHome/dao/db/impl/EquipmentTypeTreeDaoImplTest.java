@@ -12,8 +12,13 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import ua.in.SmartHome.dao.db.*;
 import ua.in.SmartHome.model.*;
+import ua.in.SmartHome.util.EquipmentVarTagBuilder;
 
 import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import static org.junit.Assert.*;
 
@@ -24,7 +29,10 @@ import static org.junit.Assert.*;
 @ActiveProfiles(profiles = "prodProfile")
 @Rollback(false)
 public class EquipmentTypeTreeDaoImplTest {
-
+	
+	@PersistenceContext
+	EntityManager entityManager;
+	
     @Autowired
     @Qualifier(value = "realVariableTagType")
     VariableTagType realVariableTagType;
@@ -43,6 +51,9 @@ public class EquipmentTypeTreeDaoImplTest {
 
     @Autowired
     ScaleDataDao scaleDataDao;
+    
+    @Autowired
+    EquipmentVarTagBuilder equipmentVarTagBuilder;
 
     @Test
     public void create() throws Exception {
@@ -55,18 +66,33 @@ public class EquipmentTypeTreeDaoImplTest {
         inOutType.setParent(anSensorType);
         equipmentTypeTreeDao.create(inOutType);
 
-        EquipmentTypePar inPar = new EquipmentTypePar("in", 1);
+        /**EquipmentTypePar inPar = new EquipmentTypePar("in", realVariableTagType);
         inPar.setEquipmentTypeTree(inOutType);
         equipmentTypeParDao.create(inPar);
 
-        EquipmentTypePar outPar = new EquipmentTypePar("out", 1);
+        EquipmentTypePar outPar = new EquipmentTypePar("out", realVariableTagType);
         outPar.setEquipmentTypeTree(inOutType);
-        equipmentTypeParDao.create(outPar);
+        equipmentTypeParDao.create(outPar);**/
 
         Equipment temp1 = new Equipment("temp1", 0, anSensorType);
         equipmentDao.create(temp1);
-
-        ScaleData temp1InParScaleData = new ScaleData(0, 100, 0.0f, 100.0f);
+        
+        
+        List result = entityManager.createQuery(
+        	    "SELECT c FROM EquipmentTypeTree c WHERE c.id LIKE :equipmentTypeTreeId")
+        	    .setParameter("equipmentTypeTreeId", 1)
+        	    .setMaxResults(10)
+        	    .getResultList();
+        System.out.println("result: " + result + " child: " + result.get(0));
+        
+        /**List<VariableTag> variableTags = equipmentVarTagBuilder.createVarTagsEquipment(temp1);
+        System.out.println("variabletags: " + variableTags);
+        for(VariableTag variabletag:variableTags){
+        	System.out.println(variabletag.getAddress());
+        }**/
+        
+        
+        /**ScaleData temp1InParScaleData = new ScaleData(0, 100, 0.0f, 100.0f);
         temp1InParScaleData.setEng(25);
         temp1InParScaleData.setEquipment(temp1);
         scaleDataDao.create(temp1InParScaleData);
@@ -78,7 +104,7 @@ public class EquipmentTypeTreeDaoImplTest {
 
 
         List<Equipment> temps = equipmentDao.readAll();
-        System.out.println(temps.get(0).getScaleDatas());
+        System.out.println(temps.get(0).getScaleDatas());**/
         //EquipmentTypeTree temp1RootEquipmentTypeTree = temp1.getEquipmentTypeTree();
         //System.out.println(temp1RootEquipmentTypeTree.getEquipmentTypeTrees());
         //System.out.println(temp1.getScaleDatas());

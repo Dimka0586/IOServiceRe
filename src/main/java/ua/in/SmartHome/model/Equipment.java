@@ -19,11 +19,11 @@ public class Equipment implements Identity, Serializable, Cloneable {
     @Column(name = "startAddress")
     private int startAddress;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private EquipmentTypeTree equipmentTypeTree;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "equipment")
-    private List<ScaleData> scaleDatas;
+    private List<VariableTag> variableTags;
 
 
     public Equipment() {
@@ -72,15 +72,15 @@ public class Equipment implements Identity, Serializable, Cloneable {
         this.id = id;
     }
 
-    public List<ScaleData> getScaleDatas() {
-        return scaleDatas;
-    }
+    public List<VariableTag> getVariableTags() {
+		return variableTags;
+	}
 
-    public void setScaleDatas(List<ScaleData> scaleDatas) {
-        this.scaleDatas = scaleDatas;
-    }
+	public void setVariableTags(List<VariableTag> variableTags) {
+		this.variableTags = variableTags;
+	}
 
-    @Override
+	@Override
     public String toString() {
         return "Equipment{" +
                 "id=" + id + ", " + "\n" +

@@ -14,23 +14,21 @@ public class EquipmentTypePar {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "count_register")
-    private int countRegister;
+    @ManyToOne
+    private EquipmentTypeTree equipmentTypeTree;
 
     @ManyToOne
-    EquipmentTypeTree equipmentTypeTree;
+    private VariableTagType variableTagType;
 
     public EquipmentTypePar() {
     }
 
-    public EquipmentTypePar(String name) {
+    public EquipmentTypePar(String name, VariableTagType variableTagType) {
         this.name = name;
+        this.variableTagType = variableTagType;
     }
 
-    public EquipmentTypePar(String name, int countRegister) {
-        this.name = name;
-        this.countRegister = countRegister;
-    }
+
 
     public int getId() {
         return id;
@@ -44,14 +42,6 @@ public class EquipmentTypePar {
         this.name = name;
     }
 
-    public int getCountRegister() {
-        return countRegister;
-    }
-
-    public void setCountRegister(int countRegister) {
-        this.countRegister = countRegister;
-    }
-
     public EquipmentTypeTree getEquipmentTypeTree() {
         return equipmentTypeTree;
     }
@@ -60,7 +50,17 @@ public class EquipmentTypePar {
         this.equipmentTypeTree = equipmentTypeTree;
     }
 
-    @Override
+
+
+    public VariableTagType getVariableTagType() {
+		return variableTagType;
+	}
+
+	public void setVariableTagType(VariableTagType variableTagType) {
+		this.variableTagType = variableTagType;
+	}
+
+	@Override
     public String toString() {
         return "EquipmentTypePar{" +
                 "id=" + id +

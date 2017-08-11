@@ -61,11 +61,11 @@ public class EquipmentDaoImplTest {
 
     @Test
     public void create() {
-        EquipmentType analogSensorType = new EquipmentType("AnalogSensor");
-        equipmentTypeDao.create(analogSensorType);
-        EquipmentTypePar inAnalogSensor = new EquipmentTypePar("in");
+        //EquipmentType analogSensorType = new EquipmentType("AnalogSensor");
+        //equipmentTypeDao.create(analogSensorType);
+        //EquipmentTypePar inAnalogSensor = new EquipmentTypePar("in");
         //inAnalogSensor.setEquipmentType(analogSensorType);
-        equipmentTypeParDao.create(inAnalogSensor);
+        //equipmentTypeParDao.create(inAnalogSensor);
 
         /*EquipmentType analogSensorType1 = new EquipmentType("AnalogSensor");
         equipmentTypeDao.create(analogSensorType1);

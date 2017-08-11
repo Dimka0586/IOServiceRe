@@ -17,38 +17,26 @@ public class EquipmentVarTagBuilder {
 
     public List<VariableTag> createVarTagsEquipment(Equipment equipment){
         List<VariableTag> variableTags = new ArrayList<VariableTag>();
-        int startAddress = equipment.getStartAddress();
+        Integer startAddress = equipment.getStartAddress();
         EquipmentTypeTree equipmentTypeTree = equipment.getEquipmentTypeTree();
-        //findEquipmentTypeTree(equipmentTypeTree, startAddress);
-
-        /*for(EquipmentTypePar equipmentTypePar:equipment.getEquipmentType().getEquipmentTypePars()){
-            //variableTags.add(variableTagDao.create(new VariableTag(startAddress,equipmentTypePar)));
-            variableTags.add(new VariableTag(startAddress,equipmentTypePar));
-            startAddress += equipmentTypePar.getCountRegister();
-        }*/
+        findEquipmentTypeTree(equipmentTypeTree, startAddress, variableTags);
         return variableTags;
     }
 
-    /*public void findEquipmentTypeTree(EquipmentTypeTree equipmentTypeTree, int startAddress){
+    public void findEquipmentTypeTree(EquipmentTypeTree equipmentTypeTree, Integer startAddress, List<VariableTag> variableTags){
         List<EquipmentTypePar> equipmentTypePars = equipmentTypeTree.getEquipmentTypePars();
-        VariableTag variableTag = null;
-        List<VariableTag> variableTags =
         if (equipmentTypePars != null){
             for(EquipmentTypePar equipmentTypePar: equipmentTypePars){
-                equipmentTypePar.getName();
-                //equipmentTypePar.getVariableTagType();
-                variableTag = new VariableTag(startAddress, equipmentTypePar);
-
                 variableTags.add(new VariableTag(startAddress, equipmentTypePar));
-                startAddress += equipmentTypePar.getCountRegister();
+                startAddress += equipmentTypePar.getVariableTagType().getCountRegister();
             }
         }
         List<EquipmentTypeTree> equipmentTypeTrees = equipmentTypeTree.getEquipmentTypeTrees();
         if (equipmentTypeTrees != null) {
             for (EquipmentTypeTree equipmentTypeTreeCycle : equipmentTypeTrees) {
-                findEquipmentTypeTree(equipmentTypeTreeCycle);
+                findEquipmentTypeTree(equipmentTypeTreeCycle, startAddress, variableTags);
             }
         }
-    }*/
+    }
 
 }

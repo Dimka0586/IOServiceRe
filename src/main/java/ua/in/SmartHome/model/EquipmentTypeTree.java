@@ -16,14 +16,18 @@ public class EquipmentTypeTree implements Identity, Serializable, Cloneable  {
     @Column(name = "name")
     private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private EquipmentTypeTree parent;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "parent")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "parent", cascade = CascadeType.ALL)
     List<EquipmentTypeTree> equipmentTypeTrees;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "equipmentTypeTree")
     List<EquipmentTypePar> equipmentTypePars;
+    
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "equipmentTypeTree")
+    private List<Equipment> equipments;
+       
 
     public EquipmentTypeTree() {
     }
@@ -67,4 +71,14 @@ public class EquipmentTypeTree implements Identity, Serializable, Cloneable  {
     public void setEquipmentTypePars(List<EquipmentTypePar> equipmentTypePars) {
         this.equipmentTypePars = equipmentTypePars;
     }
+
+	public List<Equipment> getEquipments() {
+		return equipments;
+	}
+
+	public void setEquipments(List<Equipment> equipments) {
+		this.equipments = equipments;
+	}
+    
+    
 }

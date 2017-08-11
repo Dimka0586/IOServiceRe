@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "VarTag")
+@Table(name = "VariableTag")
 public class VariableTag  implements Identity, Serializable, Cloneable{
 
     @Id
