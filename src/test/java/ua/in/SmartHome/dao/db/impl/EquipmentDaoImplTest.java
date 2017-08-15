@@ -94,7 +94,7 @@ public class EquipmentDaoImplTest {
     public void readById() {
     	Equipment temp1 = equipmentDao.readById(1);
     	System.out.println(temp1.getName());
-    	EquipmentType temp1_ett = temp1.getEquipmentTypeTree();
+    	EquipmentType temp1_ett = temp1.getEquipmentType();
     	System.out.println(temp1_ett.getName());
     	List<EquipmentType> ett = temp1_ett.getEquipmentTypes();
     	ett.forEach(ettTmp -> {System.out.println(ettTmp.getName()); System.out.println(", ");});
