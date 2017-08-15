@@ -15,7 +15,7 @@ public class EquipmentTypePar {
     private String name;
 
     @ManyToOne
-    private EquipmentTypeTree equipmentTypeTree;
+    private EquipmentType equipmentType;
 
     @ManyToOne
     private VariableTagType variableTagType;
@@ -42,12 +42,12 @@ public class EquipmentTypePar {
         this.name = name;
     }
 
-    public EquipmentTypeTree getEquipmentTypeTree() {
-        return equipmentTypeTree;
+    public EquipmentType getEquipmentType() {
+        return equipmentType;
     }
 
-    public void setEquipmentTypeTree(EquipmentTypeTree equipmentTypeTree) {
-        this.equipmentTypeTree = equipmentTypeTree;
+    public void setEquipmentType(EquipmentType equipmentType) {
+        this.equipmentType = equipmentType;
     }
 
 

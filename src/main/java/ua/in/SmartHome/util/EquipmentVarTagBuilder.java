@@ -2,6 +2,8 @@ package ua.in.SmartHome.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import ua.in.SmartHome.dao.db.EquipmentDao;
 import ua.in.SmartHome.dao.db.VariableTagDao;
 import ua.in.SmartHome.model.*;
 
@@ -14,29 +16,28 @@ public class EquipmentVarTagBuilder {
     @Autowired
     private VariableTagDao variableTagDao;
 
+    private static Integer startAddress = 0;
 
     public List<VariableTag> createVarTagsEquipment(Equipment equipment){
-        List<VariableTag> variableTags = new ArrayList<VariableTag>();
-        Integer startAddress = equipment.getStartAddress();
-        EquipmentTypeTree equipmentTypeTree = equipment.getEquipmentTypeTree();
-        findEquipmentTypeTree(equipmentTypeTree, startAddress, variableTags);
-        return variableTags;
+        startAddress = equipment.getStartAddress();
+    return findEquipmentTypeTree(equipment.getEquipmentTypeTree(), new ArrayList<VariableTag>(), equipment);
     }
 
-    public void findEquipmentTypeTree(EquipmentTypeTree equipmentTypeTree, Integer startAddress, List<VariableTag> variableTags){
+    public List<VariableTag> findEquipmentTypeTree(EquipmentType equipmentTypeTree, List<VariableTag> variableTags, Equipment equipment){
         List<EquipmentTypePar> equipmentTypePars = equipmentTypeTree.getEquipmentTypePars();
         if (equipmentTypePars != null){
             for(EquipmentTypePar equipmentTypePar: equipmentTypePars){
-                variableTags.add(new VariableTag(startAddress, equipmentTypePar));
-                startAddress += equipmentTypePar.getVariableTagType().getCountRegister();
+            	variableTags.add(new VariableTag(startAddress, equipmentTypePar, equipment));
+            	startAddress += equipmentTypePar.getVariableTagType().getCountRegister();
             }
         }
-        List<EquipmentTypeTree> equipmentTypeTrees = equipmentTypeTree.getEquipmentTypeTrees();
+        List<EquipmentType> equipmentTypeTrees = equipmentTypeTree.getEquipmentTypes();
         if (equipmentTypeTrees != null) {
-            for (EquipmentTypeTree equipmentTypeTreeCycle : equipmentTypeTrees) {
-                findEquipmentTypeTree(equipmentTypeTreeCycle, startAddress, variableTags);
+            for (EquipmentType equipmentTypeTreeCycle : equipmentTypeTrees) {
+                findEquipmentTypeTree(equipmentTypeTreeCycle, variableTags, equipment);
             }
         }
+        return variableTags;
     }
 
 }

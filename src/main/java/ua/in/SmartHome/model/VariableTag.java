@@ -28,8 +28,16 @@ public class VariableTag  implements Identity, Serializable, Cloneable{
         this.address = address;
         this.equipmentTypePar = equipmentTypePar;
     }
+    
+    
 
-    public int getId() {
+    public VariableTag(int address, EquipmentTypePar equipmentTypePar, Equipment equipment) {
+		this.address = address;
+		this.equipmentTypePar = equipmentTypePar;
+		this.equipment = equipment;
+	}
+
+	public int getId() {
         return id;
     }
 

@@ -4,19 +4,34 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-
-public class EquipmentType implements Identity, Serializable, Cloneable {
+@Entity
+@Table(name = "EquipmentType")
+@NamedQueries({
+@NamedQuery(query = "Select ett from EquipmentType ett where ett.id = :id", name = "find equipmentType by id"),
+@NamedQuery(query = "Select ett from EquipmentType ett", name = "find all equipmentTypes")
+})
+public class EquipmentType implements Identity, Serializable, Cloneable  {
 
     @Id
     @Column(name = "ID")
     @GeneratedValue
     private int id;
 
-    @Column(name = "name", unique = true)
+    @Column(name = "name")
     private String name;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "equipmentType")
+    @ManyToOne
+    private EquipmentType parent;
+
+    @OneToMany(mappedBy = "parent")
+    List<EquipmentType> equipmentTypes;
+
+    @OneToMany(mappedBy = "equipmentType")
     List<EquipmentTypePar> equipmentTypePars;
+
+    @ManyToOne
+    private Equipment equipment;
+
 
     public EquipmentType() {
     }
@@ -37,6 +52,22 @@ public class EquipmentType implements Identity, Serializable, Cloneable {
         this.name = name;
     }
 
+    public EquipmentType getParent() {
+        return parent;
+    }
+
+    public void setParent(EquipmentType parent) {
+        this.parent = parent;
+    }
+
+    public List<EquipmentType> getEquipmentTypes() {
+        return equipmentTypes;
+    }
+
+    public void setEquipmentTypes(List<EquipmentType> equipmentTypes) {
+        this.equipmentTypes = equipmentTypes;
+    }
+
     public List<EquipmentTypePar> getEquipmentTypePars() {
         return equipmentTypePars;
     }
@@ -45,11 +76,13 @@ public class EquipmentType implements Identity, Serializable, Cloneable {
         this.equipmentTypePars = equipmentTypePars;
     }
 
-    @Override
-    public String toString() {
-        return "EquipmentType{" +
-                "id=" + id + ", " + '\n' +
-                "   equipmentTypePars=" + equipmentTypePars +
-                '}';
-    }
+	public Equipment getEquipment() {
+		return equipment;
+	}
+
+	public void setEquipment(Equipment equipment) {
+		this.equipment = equipment;
+	}
+
+
 }

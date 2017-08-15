@@ -140,7 +140,7 @@
             <property name="jpaProperties">
                 <props>
                     <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
-                    <prop key="hibernate.hbm2ddl.auto">update</prop>
+                    <prop key="hibernate.hbm2ddl.auto">create</prop>
                     <prop key="hibernate.show_sql">true</prop>
                     <!--<prop key="javax.persistence.schema-generation.database.action">none</prop>
                     <prop key="hibernate.ejb.use_class_enhancer">true</prop>-->
@@ -205,7 +205,7 @@
             <property name="echo" value="false"/>
             <property name="comment" value="Arduino SmartHome port"/>
         </bean>
-        
+
         <bean id="arduinoSmartHomeProtocol" class="ua.in.SmartHome.model.system.Protocol">
             <property name="name" value="j2ModModbusSerialDaoImpl"/>
         </bean>

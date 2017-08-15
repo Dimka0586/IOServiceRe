@@ -13,31 +13,31 @@ public class Equipment implements Identity, Serializable, Cloneable {
     @GeneratedValue
     private int id;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
 
     @Column(name = "startAddress")
     private int startAddress;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private EquipmentTypeTree equipmentTypeTree;
+    @OneToOne
+    private EquipmentType equipmentType;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "equipment")
+    @OneToMany(mappedBy = "equipment")
     private List<VariableTag> variableTags;
 
 
     public Equipment() {
     }
 
-    public Equipment(String name, int startAddress, EquipmentType equipmentType) {
+    public Equipment(String name, int startAddress) {
         this.name = name;
         this.startAddress = startAddress;
     }
 
-    public Equipment(String name, int startAddress, EquipmentTypeTree equipmentTypeTree) {
+    public Equipment(String name, int startAddress, EquipmentType equipmentType) {
         this.name = name;
         this.startAddress = startAddress;
-        this.equipmentTypeTree = equipmentTypeTree;
+        this.equipmentType = equipmentType;
     }
 
     public int getId() {
@@ -60,12 +60,12 @@ public class Equipment implements Identity, Serializable, Cloneable {
         this.startAddress = startAddress;
     }
 
-    public EquipmentTypeTree getEquipmentTypeTree() {
-        return equipmentTypeTree;
+    public EquipmentType getEquipmentType() {
+        return equipmentType;
     }
 
-    public void setEquipmentTypeTree(EquipmentTypeTree equipmentTypeTree) {
-        this.equipmentTypeTree = equipmentTypeTree;
+    public void setEquipmentType(EquipmentType equipmentType) {
+        this.equipmentType = equipmentType;
     }
 
     public void setId(int id) {
