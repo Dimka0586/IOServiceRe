@@ -13,12 +13,6 @@ public class EquipmentTypeServiceImpl extends AbstractService<EquipmentType> imp
 	@Autowired
 	EquipmentTypeDao equipmentTypeDao;
 
-	@Override
-	public void prepareCreateNew() {
-		//EquipmentType getEquipmentTypeById(1);
-
-	}
-
 	public EquipmentType getEquipmentTypeById(int id){
 		return equipmentTypeDao.readById(id);
 	}

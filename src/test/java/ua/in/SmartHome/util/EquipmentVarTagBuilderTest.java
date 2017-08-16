@@ -41,7 +41,7 @@ public class EquipmentVarTagBuilderTest {
     	List<VariableTag> variableTags = equipmentVarTagBuilder.createVarTagsEquipment(temp1);
     	System.out.println(temp1.getName());
     	variableTags.forEach(variableTag -> {
-    		System.out.print(variableTag.getEquipment().getEquipmentTypeTree().getName() + " -> ");
+    		System.out.print(variableTag.getEquipment().getEquipmentType().getName() + " -> ");
     		System.out.print(variableTag.getEquipmentTypePar().getEquipmentType().getName() + " -> ");
     		System.out.print(variableTag.getEquipmentTypePar().getName() + ": ");
     		System.out.println(variableTag.getAddress());

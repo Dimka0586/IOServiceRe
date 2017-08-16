@@ -76,27 +76,25 @@ public class EquipmentTypeDaoImplTest {
     @Before
     public void init() throws Exception{
     	generatorTestData.createTestData();
-    	nameNewEquipmentType = "AnalogSensorType";
     	equipmentTypes = equipmentTypeDao.readAll();
-    	equipmentTypePars = equipmentTypeParDao.readAll();
     	equipmentTypePars = Arrays.asList(new EquipmentTypePar("Eng", intVariableTagType),
     										new EquipmentTypePar("R", realVariableTagType));
     }
 
     public void setParentEquipmentTypes(EquipmentType root, List<EquipmentType> equipmentTypes){
-    	equipmentTypes.forEach(equipmentType -> equipmentType.setParent(root));
+    	equipmentTypes.forEach(equipmentType -> {
+    		List<EquipmentType> parents = root.getParents();
+    		parents.add(equipmentType);
+    		});
     }
 
     @Test
     public void create(){
-    	final EquipmentType newEquipmentType = new EquipmentType();
-    	newEquipmentType.setName(nameNewEquipmentType);
-    	setParentEquipmentTypes(newEquipmentType, equipmentTypes);
-    	equipmentTypePars.forEach(equipmentTypePar -> {
-    		equipmentTypeParDao.create(equipmentTypePar);
-    		equipmentTypePar.setEquipmentType(newEquipmentType);
-    	});
-    	equipmentTypeDao.create(newEquipmentType);
+    	EquipmentType analogSensorType = new EquipmentType("AnalogSensorType");
+    	setParentEquipmentTypes(analogSensorType, equipmentTypes);
+    	analogSensorType.setEquipmentTypePars(equipmentTypePars);
+    	equipmentTypeDao.create(analogSensorType);
+    	
     }
 
     public void readAll() throws Exception {

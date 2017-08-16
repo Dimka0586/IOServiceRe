@@ -1,7 +1,11 @@
 package ua.in.SmartHome.model;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,17 +24,22 @@ public class EquipmentType implements Identity, Serializable, Cloneable  {
     @Column(name = "name")
     private String name;
 
-    @ManyToOne
-    private EquipmentType parent;
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(name="PARENT_EQTYPE_CHILD_EQTYPE",joinColumns={@JoinColumn(name="Parent_Id")},
+    inverseJoinColumns={@JoinColumn(name="Child_Id")})
+    private List<EquipmentType> parents = new ArrayList<>();
 
-    @OneToMany(mappedBy = "parent")
-    List<EquipmentType> equipmentTypes;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "parents")
+    List<EquipmentType> equipmentTypes = new ArrayList<>();
 
+    //@JsonIgnore
     @OneToMany(mappedBy = "equipmentType")
     List<EquipmentTypePar> equipmentTypePars;
 
-    @ManyToOne
-    private Equipment equipment;
+    //@ManyToOne
+    //private Equipment equipment;
 
 
     public EquipmentType() {
@@ -52,15 +61,16 @@ public class EquipmentType implements Identity, Serializable, Cloneable  {
         this.name = name;
     }
 
-    public EquipmentType getParent() {
-        return parent;
-    }
 
-    public void setParent(EquipmentType parent) {
-        this.parent = parent;
-    }
+    public List<EquipmentType> getParents() {
+		return parents;
+	}
 
-    public List<EquipmentType> getEquipmentTypes() {
+	public void setParents(List<EquipmentType> parents) {
+		this.parents = parents;
+	}
+
+	public List<EquipmentType> getEquipmentTypes() {
         return equipmentTypes;
     }
 
@@ -76,13 +86,13 @@ public class EquipmentType implements Identity, Serializable, Cloneable  {
         this.equipmentTypePars = equipmentTypePars;
     }
 
-	public Equipment getEquipment() {
+	/*public Equipment getEquipment() {
 		return equipment;
 	}
 
 	public void setEquipment(Equipment equipment) {
 		this.equipment = equipment;
-	}
+	}*/
 
 
 }

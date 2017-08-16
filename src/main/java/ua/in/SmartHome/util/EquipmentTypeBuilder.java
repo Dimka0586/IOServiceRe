@@ -35,4 +35,11 @@ public class EquipmentTypeBuilder {
 
         return equipmentType;
     }
+    
+    public void setParentEquipmentTypes(EquipmentType root, List<EquipmentType> equipmentTypes){
+    	equipmentTypes.forEach(equipmentType -> {
+    		List<EquipmentType> parents = root.getParents();
+    		parents.add(equipmentType);
+    		});
+    }
 }

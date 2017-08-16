@@ -1,6 +1,8 @@
 package ua.in.SmartHome.service.model;
 
-public interface EquipmentTypeService {
-	
-	public void prepareCreateNew();
+import ua.in.SmartHome.model.EquipmentType;
+
+public interface EquipmentTypeService extends GeneralCRUDService<EquipmentType>{
+
+
 }

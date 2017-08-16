@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -17,23 +18,30 @@ import ua.in.SmartHome.dao.db.EquipmentDao;
 import ua.in.SmartHome.dao.db.EquipmentTypeDao;
 import ua.in.SmartHome.dao.db.EquipmentTypeParDao;
 import ua.in.SmartHome.dao.db.VariableTagDao;
+import ua.in.SmartHome.dao.db.VariableTagTypeDao;
 import ua.in.SmartHome.dao.db.system.IODeviceDao;
 import ua.in.SmartHome.model.*;
+import ua.in.SmartHome.util.EquipmentTypeBuilder;
 import ua.in.SmartHome.util.EquipmentVarTagBuilder;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:application-context.xml")
 @WebAppConfiguration
 @Transactional
-@ActiveProfiles(profiles = "prodProfile")
 @Rollback(false)
+@ActiveProfiles(profiles = "prodProfile")
 public class EquipmentDaoImplTest {
 
-    //@Autowired
-    //@Qualifier(value = "realVariableTagType")
-    //EquipmentTypePar realVariableTagType;
+    @Autowired
+    @Qualifier(value = "realVariableTagType")
+    VariableTagType realVariableTagType;
+
+    @Autowired
+    @Qualifier(value = "intVariableTagType")
+    VariableTagType intVariableTagType;
 
     @Autowired
     VariableTagDao variableTagDao;
@@ -54,29 +62,42 @@ public class EquipmentDaoImplTest {
     EquipmentVarTagBuilder equipmentVarTagBuilder;
 
     @Autowired
+    EquipmentTypeBuilder equipmentTypeBuilder;
+
+    @Autowired
     GeneratorTestData generatorTestData;
+
+    @Autowired
+    VariableTagTypeDao variableTagTypeDao;
 
     EquipmentType inOutEquipmentType;
     EquipmentType alarmStateEquipmentType;
+    List<EquipmentType> equipmentTypes;
+    EquipmentType analogSensorType;
+    EquipmentType analogLevelType;
+    List<EquipmentTypePar> equipmentTypePars;
 
-    
+
     @Before
     public void init() throws Exception{
     	generatorTestData.createTestData();
+    	
     	inOutEquipmentType = equipmentTypeDao.readById(1);
     	alarmStateEquipmentType = equipmentTypeDao.readById(2);
+    	analogSensorType = equipmentTypeDao.readById(3);
+    	equipmentTypes = equipmentTypeDao.readAll();
     }
 
     @Test
     public void create() {
     	Equipment inOut1 = new Equipment("inOut-1", 122, inOutEquipmentType);
-    	Equipment inOut2 = new Equipment("inOut-2", 125, inOutEquipmentType);
-    	Equipment alarmState1 = new Equipment("alarmState-1", 128, alarmStateEquipmentType);
-    	Equipment alarmState2 = new Equipment("alarmState-2", 132, alarmStateEquipmentType);
+    	equipmentVarTagBuilder.createVarTagsEquipment(inOut1).forEach(variableTag -> variableTagDao.create(variableTag));
     	equipmentDao.create(inOut1);
-    	equipmentDao.create(inOut2);
-    	equipmentDao.create(alarmState1);
-    	equipmentDao.create(alarmState2);
+    	
+    	Equipment temp1 = new Equipment("temp-1", 150, analogSensorType);
+    	equipmentVarTagBuilder.createVarTagsEquipment(temp1).forEach(variableTag -> variableTagDao.create(variableTag));
+    	equipmentDao.create(temp1);
+
     }
 
     public void readAll() {

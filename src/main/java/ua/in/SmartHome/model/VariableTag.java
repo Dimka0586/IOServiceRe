@@ -18,7 +18,7 @@ public class VariableTag  implements Identity, Serializable, Cloneable{
     @ManyToOne(fetch = FetchType.EAGER)
     private EquipmentTypePar equipmentTypePar;
 
-    @JoinColumn(name = "variableTags")
+    @ManyToOne
     private Equipment equipment;
 
     public VariableTag() {

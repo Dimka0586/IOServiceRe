@@ -13,14 +13,11 @@ import java.util.List;
 @Component
 public class EquipmentVarTagBuilder {
 
-    @Autowired
-    private VariableTagDao variableTagDao;
-
     private static Integer startAddress = 0;
 
     public List<VariableTag> createVarTagsEquipment(Equipment equipment){
         startAddress = equipment.getStartAddress();
-    return findEquipmentTypeTree(equipment.getEquipmentTypeTree(), new ArrayList<VariableTag>(), equipment);
+    return findEquipmentTypeTree(equipment.getEquipmentType(), new ArrayList<VariableTag>(), equipment);
     }
 
     public List<VariableTag> findEquipmentTypeTree(EquipmentType equipmentTypeTree, List<VariableTag> variableTags, Equipment equipment){
