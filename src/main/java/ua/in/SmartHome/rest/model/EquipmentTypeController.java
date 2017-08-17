@@ -24,14 +24,14 @@ public class EquipmentTypeController {
 
 	@PostMapping("/equipmentTypes")
     public EquipmentType putEquipmentType(@RequestBody EquipmentType equipmentType){
+        System.out.println(equipmentType.getName());
+        System.out.println(equipmentType.getParents());
         return equipmentTypeService.create(equipmentType);
     }
 
     @GetMapping("/equipmentTypes")
     public List<EquipmentType> getEquipmentTypes(){
-        List<EquipmentType> equipmentTypes = equipmentTypeService.readAll();
-        System.out.println(equipmentTypes);
-    	return equipmentTypes;
+        return equipmentTypeService.readAll();
     }
 
     @PutMapping("/equipmentTypes")

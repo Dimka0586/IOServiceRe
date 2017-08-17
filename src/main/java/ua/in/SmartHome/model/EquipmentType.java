@@ -34,7 +34,7 @@ public class EquipmentType implements Identity, Serializable, Cloneable  {
     @ManyToMany(mappedBy = "parents")
     List<EquipmentType> equipmentTypes = new ArrayList<>();
 
-    //@JsonIgnore
+    @JsonIgnore
     @OneToMany(mappedBy = "equipmentType")
     List<EquipmentTypePar> equipmentTypePars;
 

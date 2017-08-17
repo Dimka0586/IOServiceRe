@@ -7,7 +7,10 @@ import ua.in.SmartHome.service.model.GeneralCRUDService;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 @Service
+@Transactional
 public abstract class AbstractService<T> implements GeneralCRUDService<T> {
 
     @Autowired
